@@ -11,12 +11,17 @@ function App() {
 
     const isEmpty = input.length ? false : true;
 
+    let output = "";
+
     if (!isEmpty) {
-      const json = JSON.stringify(input).replace(/\\n|\\t|\\r/g, "");
-      setOutput(json);
-    } else {
-      setOutput("");
+      const json = JSON.stringify(input);
+      const withoutScapes = json.replace(/\\n|\\t|\\r/g, "");
+      const withoutSpaces = withoutScapes.replace(/\s(?=\W|(\d,))/g, "");
+
+      output = withoutSpaces;
     }
+
+    setOutput(output);
   };
 
   return (
