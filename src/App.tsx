@@ -4,8 +4,11 @@ import { TextArea, Clipboard } from "./components";
 function App() {
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
+  const [isCopied, setIsCopied] = useState(false);
 
   const handleChange = (event: { target: { value: string } }) => {
+    if (isCopied) setIsCopied(false);
+
     const input = event.target.value;
     setInput(input);
 
@@ -33,7 +36,7 @@ function App() {
         <TextArea label="Text" placeholder="“{\“foo\”:\“bar\” }”" value={output} disabled copyToClipboard />
 
         <div className="absolute top-0 right-0">
-          <Clipboard value={output} />
+          <Clipboard value={output} onClick={() => setIsCopied(true)} isCopied={isCopied} />
         </div>
       </div>
 
