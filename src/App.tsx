@@ -1,34 +1,45 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import { useState } from "react";
+import { TextArea, Clipboard } from "./components";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [input, setInput] = useState("");
+  const [output, setOutput] = useState("");
+
+  const handleChange = (event: { target: { value: string } }) => {
+    const input = event.target.value;
+    setInput(input);
+
+    const isEmpty = input.length ? false : true;
+
+    if (!isEmpty) {
+      const json = JSON.stringify(input).replace(/\\n|\\t|\\r/g, "");
+      setOutput(json);
+    } else {
+      setOutput("");
+    }
+  };
 
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="bg-zinc-900 w-full h-screen flex items-center justify-center flex-col">
+      <h1 className="text-zinc-50 text-3xl font-semibold mb-10">Stringify</h1>
+
+      <div className="flex items-center justify-center h-3/4 space-x-10 relative">
+        <TextArea label="JSON" placeholder="{ “foo”: “bar” }" value={input} onChange={handleChange} />
+        <TextArea label="Text" placeholder="“{\“foo\”:\“bar\” }”" value={output} disabled copyToClipboard />
+
+        <div className="absolute top-0 right-0">
+          <Clipboard value={output} />
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
+
+      <p className="mt-6 text-zinc-500">
+        Made by{" "}
+        <a className="text-teal-500" target="_blank" href="https://github.com/andreglatz">
+          André Glatz
+        </a>
       </p>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
